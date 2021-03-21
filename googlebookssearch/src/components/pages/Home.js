@@ -1,16 +1,16 @@
 import React from "react";
-import "./Home.css";
+import "./pages.css";
 
 function Home() {
   return (
-    <div className= "container-fluid">
-      <div className="card">
-             <div className="card-body">
-          <p className="card-text">
-            Where your favorite books are just a click away!
-          </p>
-        </div>
-      </div>
+    <div className="container-fluid">
+      <nav className="navbar navbar-light bg-light">
+        <h3>
+          Where your favorite books are just a click away!
+        </h3>
+      </nav>
+
+      <img src="./images/book.jpg" className="logo" alt="books" />
     </div>
   );
 }

@@ -19,7 +19,7 @@ function NavTabs() {
         <Link
           to="/search"
           className={
-            window.location.pathname === "/search" ? "nav-link active" : "nav-link"}
+            window.location.pathname === "/search" ? "nav-link" : "nav-link"}
         >
           Search
         </Link>
@@ -28,7 +28,7 @@ function NavTabs() {
         <Link
           to="/saved"
           className={
-            window.location.pathname === "/saved" ? "nav-link active" : "nav-link"}
+            window.location.pathname === "/saved" ? "nav-link" : "nav-link"}
         >
           Saved
         </Link>

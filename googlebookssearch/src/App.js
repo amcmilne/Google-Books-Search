@@ -17,7 +17,6 @@ function App() {
         <Route exact path="/saved" component={Saved} />
         <Route exact path="/search" component={Search} />
       </Router>
-      <img src="./images/book.jpg" className="App-logo" alt="logo" />
     </div>
   );
 }

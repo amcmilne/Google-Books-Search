@@ -1,47 +1,48 @@
 import React from "react";
-import Search from "../components/pages/Search";
-import API from "../utils/API";
 
-class Results extends React.Component {
-  state = {
-    books: [],
-    search: "",
-  };
-
-  //Search books by API
-  searchBooks = () => {
-    API.googleBooks(this.state.search)
-      .then((res) => {
-        console.log("This is res.data", res.data.items);
-        this.setState({
-          books: res.data.items,
-          search: "",
-        });
-      })
-      .catch((err) => console.log(err));
-  };
-
-  // Handle input
-  handleInputChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
-  };
-
-  render() {
-    return (
-      <div>
-        <form>
-          <Search />
-          <h5>Search for books</h5>
-          value={this.state.search}
-          onChange={this.handleInputChange}
-          name="search" placeholder="e.g. Harry Potter"
-        </form>
+function Results(props) {
+  return props.books.length === 0 ? (
+    <div className="card">
+      <div className="card-body player">
+        <div className="article">
+          <h3>Search Results</h3>
+        </div>
       </div>
-    );
-  }
+    </div>
+  ) : (
+    <div>
+      <div className="container-fluid">
+        <div className="row">
+          <table className="bookResults">
+            <thead />
+            <tr />
+            <tbody className="id" />
+
+            {props.books &&
+              props.books.map((book) => (
+                <tr className="results" key={book._id}>
+                  <td>
+                    <img className="image" src={book.image} alt={book.title} />
+                  </td>
+
+                  <td className="title">{book.title}</td>
+
+                  <td className="description">{book.description}</td>
+
+                  <td className="authors">{book.authors}</td>
+
+                  <td className="listPrice">{book.listPrice}</td>
+
+                  <td className="retailPrice">{book.retailPrice}</td>
+
+                  <td className="publisher">{book.publisher}</td>
+                </tr>
+              ))}
+          </table>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default Results;
