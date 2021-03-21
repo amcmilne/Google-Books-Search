@@ -1,13 +1,13 @@
 import React from "react";
+import "./Home.css";
 
 function Home() {
   return (
-    <div>
-      <div className="card" styleName="width: 50rem;">
-        <img src="./images/books.jpg" class="card-img-top" alt="books" />
-        <div className="card-body">
+    <div className= "container-fluid">
+      <div className="card">
+             <div className="card-body">
           <p className="card-text">
-            WELCOME TO GOOGLE BOOK SEARCH!
+            Where your favorite books are just a click away!
           </p>
         </div>
       </div>
