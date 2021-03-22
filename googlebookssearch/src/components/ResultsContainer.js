@@ -1,77 +1,94 @@
 import React from "react";
-import Results from "../components/Results";
+import BookSearch from "../components/BookSearch";
+import { Container, Row, Col } from ".//Layout";
+import Results from ".//Results";
 import API from "../utils/API";
 
-class ResultsContainer extends React.Component {
 
+class ResultsContainer extends React.Component {
   state = {
     search: "",
     book: [],
   };
-  
+
   componentDidMount() {
     API.googleBooks(this.state.search)
-        .then(res => {
-            this.setState({
-            books: res.data.items,
-            search: ""
-        })})
-        .catch(err => console.log(err));
-    }
+      .then((res) => {
+        this.setState({
+          books: res.data.results,
+          search: "",
+        });
+      })
+      .catch((err) => console.log(err));
+  }
 
-  handleInputChange = (event) => {
+  handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
       [name]: value,
     });
   };
 
-  handleFormSubmit = (event) => {
+  handleFormSubmit = event => {
     event.preventDefault();
-    this.searchBooks();
+    API.getBooks(this.state.search)
+      .then((res) => {
+        if (res.data.items === "error") {
+          throw new Error(res.data.items);
+        } else {
+          let results = res.data.items;
+          results = results.map((bookChoice) => {
+            bookChoice = {
+              id: bookChoice.id,
+              title: bookChoice.title,
+              decription: bookChoice.description,
+              authors: bookChoice.authors,
+              listPrice: bookChoice.listPrice,
+              retailPrice: bookChoice.retailPrice,
+              publisher: bookChoice.publisher,
+              image: bookChoice.image,
+            };
+            return bookChoice;
+          });
+          this.setState({ books: results, search: "" });
+        }
+      })
+      .catch((err) => this.setState({ error: err.items }));
   };
 
-
-saveGoogleBook = bookChoice => {
-    console.log("This is the current book", bookChoice);
-    API.saveBook({
-        id: bookChoice.id,
-        title: bookChoice.title,
-        authors: bookChoice.authors,
-        listPrice: bookChoice.listPrice,
-        retailPrice: bookChoice.retailPrice,
-        publisher: bookChoice.publisher,
-        image: bookChoice.image,
-        
-    })
-    .then(res => console.log("Success", res))
-    .catch(err => console.log("Error", err));
-}
+  handleSavedBtn = event => {
+    event.preventDefault();
+    let savedBooks = this.state.books.filter(book => book.id === event.target.id)
+    API.saveBook(savedBooks)
+    .then((res) => console.log("Success", res))
+    .catch((err) => console.log("Error", err));
+  };
 
   render() {
     return (
-      <div>
-        <div className="card">
-          <div className="card-header"></div>
-          <div className="card-body">
+      <Container fluid>
+        <Container>
+          <Row>
+            <Col size="12">
             <img
               src={this.props.imageLinks}
               style={{ maxWidth: "100px" }}
               alt="book"
             />
-            <Results
+            <BookSearch
               handleInpputChange={this.handleInputChange}
               handleFormSubmit={this.handleFormSubmit}
               book={this.state.book}
-              results={this.state.bookArray}
-            />
-            {/* <button onClick={this.onClickFunc} className="btn">
-              {this.state.text}
-            </button> */}
-          </div>
-        </div>
-      </div>
-    );
+              results={this.state.bookChoice}
+              />
+              </Col>
+              </Row>
+            </Container>
+            <Container>
+          <Results books={this.state.books} handleSavedButton={this.handleSavedBtn} />
+        </Container>
+      </Container>
+    )
   }
 }
 

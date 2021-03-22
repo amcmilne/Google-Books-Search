@@ -1,6 +1,6 @@
 import React from "react";
 
-function BookSearch(props) {
+const BookSearch = props => {
   return (
     <div className="container-fluid">
       <form className="form-inline">
@@ -10,6 +10,7 @@ function BookSearch(props) {
           name="search"
           type="text"
           placeholder="Search by Name"
+          value= {props.value}
         />
         <button
           type="submit"

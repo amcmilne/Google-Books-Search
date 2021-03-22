@@ -1,8 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const routes = require("./routes");
+const routes = require("./routes/API");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const path = require("path");
+const PORT = process.env.PORT || 3001;
 
 
 //--------------------------------Middleware---------------------------------------------------//
@@ -17,15 +18,23 @@ if (process.env.NODE_ENV === "production") {
 //--------------------------------API routes--------------------------------------------------//
 app.use(routes);
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "../client/build/index.html"));
+});
+
 //--------------------------------Mongo DB connection-----------------------------------------//
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/googlebooks";
 
 mongoose.connect(MONGODB_URI, {
-  useUnifiedTopology: true,
-  useNewUrlParser: true
-});
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  }
+);
+
 
 app.listen(PORT, () => {
-  console.log(`🌎 ==> API server now on port ${PORT}!`);
+  console.log(`🌎 ==> server now on port ${PORT}!`);
 });
   

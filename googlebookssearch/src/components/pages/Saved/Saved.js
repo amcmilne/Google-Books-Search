@@ -1,8 +1,8 @@
 import React from "react";
-import SavedBooks from "../SavedBooks";
-import "./pages.css";
+import SavedBooks from "../../SavedBooks";
+import "../css/pages.css";
 
-function Saved() {
+const Saved = props => {
   return (
     <div className="container-fluid">
       <nav className="navbar navbar-light bg-light">
