@@ -5,7 +5,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/pages/Home/Home";
 import Saved from "./components/pages/Saved/Saved.js";
 import Search from "./components/pages/Search/Search.js";
-import Footer from ".//components/Footer";
+import Footer from "./components/Footer";
 import "./App.css";
 
 function App() {

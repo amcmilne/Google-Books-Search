@@ -1,7 +1,7 @@
 import React from "react";
 import "../Header/Header.css";
 
-function Header() {
+function Header({children} ) {
   return (
     <div>
       <section className="hero is-dark is-medium">
@@ -16,6 +16,7 @@ function Header() {
           </div>
         </div>
       </section>
+      {children}
     </div>
   );
 }
