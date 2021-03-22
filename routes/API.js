@@ -2,6 +2,7 @@ const router = require("express").Router();
 const axios = require("axios");
 const { GoogleBooks } = require("../models/GoogleBooks");
 
+
 router.get("/api/books", (req, res) => {
   GoogleBooks.findAll(req.query)
     .then((dbModel) => {
@@ -16,7 +17,7 @@ router.post("/search", (req, res) => {
   let bookTitle = req.body.title.replace(/\s/g, "+");
   axios
     .get(
-      `https://www.googleapis.com/books/v1/volumes?q=${bookTitle}&key=${process.env.APIkey}`
+      `https://www.googleapis.com/books/v1/volumes?q=${bookTitle}&key=${APIkey}`
     )
     .then((response) => {
       res.json(response.data.items);
