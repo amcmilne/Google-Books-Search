@@ -1,7 +1,7 @@
 import React from "react";
-import BookSearch from "../components/BookSearch";
-import { Container, Row, Col } from ".//Layout";
-import Results from ".//Results";
+import BookSearch from "./BookSearch";
+import { Container, Row, Col } from "./Layout";
+import Results from "./Results";
 import API from "../utils/API";
 
 
