@@ -2,7 +2,7 @@ import React from "react";
 import SavedBooks from "../../SavedBooks";
 import "../css/pages.css";
 
-const Saved = props => {
+function Saved()  {
   return (
     <div className="container-fluid">
       <nav className="navbar navbar-light bg-light">

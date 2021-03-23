@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const axios = require("axios");
-const { GoogleBooks } = require("../models/GoogleBooks");
+const GoogleBooks  = require("../models/GoogleBooks");
 
 
 router.get("/api/books", (req, res) => {
@@ -13,20 +13,21 @@ router.get("/api/books", (req, res) => {
     });
 });
 
-router.post("/search", (req, res) => {
-  let bookTitle = req.body.title.replace(/\s/g, "+");
-  axios
-    .get(
-      `https://www.googleapis.com/books/v1/volumes?q=${bookTitle}&key=${APIkey}`
-    )
-    .then((response) => {
-      res.json(response.data.items);
-    })
-    .catch((err) => {
-      res.status(400).json(err);
-    });
-});
-router.post("/api/books", (req, res) => {
+// router.post("/search", (req, res) => {
+//   let bookTitle = req.body.title.replace(/\s/g, "+");
+//   axios
+//     .get(
+//       `https://www.googleapis.com/books/v1/volumes?q=${bookTitle}&key=${APIkey}`
+//     )
+//     .then((response) => {
+//       res.json(response.data.items);
+//     })
+//     .catch((err) => {
+//       res.status(400).json(err);
+//     });
+// });
+
+router.post("/api/books", (req, res) => {   
   GoogleBooks.create(req.body)
     .then((dbModel) => {
       res.json(dbModel);

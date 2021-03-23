@@ -10,7 +10,8 @@ const BookSearch = props => {
           name="search"
           type="text"
           placeholder="Search by Name"
-          value= {props.value}
+          value= {props.search}
+          id= "search"
         />
         <button
           type="submit"

@@ -1,67 +1,58 @@
 import React from "react";
 import BookSearch from "./BookSearch";
 import { Container, Row, Col } from "./Layout";
-import Results from "./Results";
+//import Results from "./Results";
 import API from "../utils/API";
-
+import ResultsCard from "./ResultsCard";
 
 class ResultsContainer extends React.Component {
   state = {
     search: "",
-    book: [],
+    results: [],
   };
 
   componentDidMount() {
-    API.googleBooks(this.state.search)
+    console.log("success");
+    this.searchBooks("");
+  }
+  searchBooks = (search) => {
+    API.googleBooks(search)
       .then((res) => {
         this.setState({
-          books: res.data.results,
-          search: "",
+          results: res.data.items,
         });
       })
+      .then(console.log(this.state.results))
       .catch((err) => console.log(err));
-  }
+  };
 
-  handleInputChange = event => {
+  handleBookClick = (event) => {
+    let bookId = event;
+    console.log(bookId);
+  };
+
+  handleInputChange = (event) => {
     const { name, value } = event.target;
     this.setState({
       [name]: value,
     });
   };
 
-  handleFormSubmit = event => {
+  handleFormSubmit = (event) => {
     event.preventDefault();
-    API.getBooks(this.state.search)
-      .then((res) => {
-        if (res.data.items === "error") {
-          throw new Error(res.data.items);
-        } else {
-          let results = res.data.items;
-          results = results.map((bookChoice) => {
-            bookChoice = {
-              id: bookChoice.id,
-              title: bookChoice.title,
-              decription: bookChoice.description,
-              authors: bookChoice.authors,
-              listPrice: bookChoice.listPrice,
-              retailPrice: bookChoice.retailPrice,
-              publisher: bookChoice.publisher,
-              image: bookChoice.image,
-            };
-            return bookChoice;
-          });
-          this.setState({ books: results, search: "" });
-        }
-      })
-      .catch((err) => this.setState({ error: err.items }));
+    this.searchBooks(this.state.search);
   };
 
-  handleSavedBtn = event => {
-    event.preventDefault();
-    let savedBooks = this.state.books.filter(book => book.id === event.target.id)
-    API.saveBook(savedBooks)
-    .then((res) => console.log("Success", res))
-    .catch((err) => console.log("Error", err));
+  handleSavedBtn = (title, authors, publisher) => {
+    const bookInfo = {
+      title: title,
+      author: authors,
+      publisher: publisher,
+    };
+    console.log(bookInfo);
+    API.saveBook(bookInfo)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   render() {
@@ -70,25 +61,35 @@ class ResultsContainer extends React.Component {
         <Container>
           <Row>
             <Col size="12">
-            <img
-              src={this.props.imageLinks}
-              style={{ maxWidth: "100px" }}
-              alt="book"
-            />
-            <BookSearch
-              handleInpputChange={this.handleInputChange}
-              handleFormSubmit={this.handleFormSubmit}
-              book={this.state.book}
-              results={this.state.bookChoice}
+              <BookSearch
+                search={this.state.search}
+                handleFormSubmit={this.handleFormSubmit}
+                handleInputChange={this.handleInputChange}
               />
-              </Col>
-              </Row>
-            </Container>
-            <Container>
-          <Results books={this.state.books} handleSavedButton={this.handleSavedBtn} />
+            </Col>
+          </Row>
         </Container>
+        <Row>
+          {this.state.results.map((book, index) => (
+            <div key={index}>
+              <ResultsCard
+                id={book.volumeInfo.id}
+                title={book.volumeInfo.title}
+                decription={book.volumeInfo.description}
+                authors={book.volumeInfo.authors}
+                publisher={book.volumeInfo.publisher}
+                image={
+                  book.volumeInfo &&
+                  book.volumeInfo.imageLinks &&
+                  book.volumeInfo.imageLinks.thumbnail
+                }
+                handleSavedBtn={this.handleSavedBtn}
+              />
+            </div>
+          ))}
+        </Row>
       </Container>
-    )
+    );
   }
 }
 
