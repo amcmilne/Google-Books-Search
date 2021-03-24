@@ -36,5 +36,6 @@
     "url": "https://github.com/amcmilne/Google-Books-Search/issues"
   },
   "homepage": "https://github.com/amcmilne/Google-Books-Search#readme",
-  "description": ""
+  "description": "",
+  "proxy": "http://localhost:3001"
 }

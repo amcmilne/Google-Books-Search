@@ -4,7 +4,7 @@ import "../Header/Header.css";
 function Header({children} ) {
   return (
     <div>
-      <section className="hero is-dark is-medium">
+      <section className="hero is-dark is-large">
         <div className="hero-head">
           <div className="hero-body">
             <div className="container has-text-centered">

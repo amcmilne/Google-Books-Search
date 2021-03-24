@@ -11,7 +11,7 @@ const Search = (props) => {
       </nav>
      
 
-      <img src="./images/book.jpg" className="App-logo" alt="logo" />
+      <img src="./images/book.jpg" className="book" alt="logo" />
     </div>
   );
 };

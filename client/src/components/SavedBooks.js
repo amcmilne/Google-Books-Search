@@ -1,40 +1,75 @@
-import React from "react";
-import { Container, Row, Col } from "./Layout";
+import React, { Component } from "react";
+import API from "../utils/API";
 
-const Saved = (props) => {
-  return (
-    <Container>
-      <h3>Saved Books</h3>
-      {props.savedBooks &&
-        props.savedBooks.map((savedbook) => {
-          return (
-            <div>
-              <div className="card mb-2">
-                <div className="card-body">
-                  <Row id={savedbook.title} key={savedbook._id}>
-                    <Col size="2">
+class SavedBooks extends Component {
+  state = {
+    savedBooks: [],
+  };
+
+  componentDidMount() {
+    API.savedBooks()
+      .then((savedBooks) => this.setState({ savedBooks: savedBooks }))
+      .catch((err) => console.error(err));
+  }
+
+  handleSavedBtn = (book) => {
+    if (this.state.savedBooks.map((book) => book._id).includes(book._id)) {
+      API.saveBook(book)
+        .then((savedBook) =>
+          this.setState({
+            savedBooks: this.state.savedBooks.concat([savedBook]),
+          })
+        )
+        .catch((err) => console.error(err));
+    }
+  };
+
+  render() {
+    return (
+      <div>
+        {this.props.books && this.props.books.length ? (
+          <div>
+            {this.props.books &&
+              this.props.books.map((result) => (
+                <div className="card mb-3" key={result._id}>
+                  <div className="row">
+                    <div className="col-md-2">
                       <img
-                        alt={props.title}
+                        alt={result.title}
                         className="img-fluid"
-                        src={props.src}
-                        style={{ margin: "0 auto" }}
+                        src={result.image}
                       />
-                    </Col>
-                    <Col size="10" className="pl-2">
-                      <h3 className="bookTitle">{savedbook.title}</h3>
-                      <h4 className="bookAuthor">{savedbook.authors}</h4>
-                      <p className="bookDescription pr-3">
-                        {savedbook.description}
-                      </p>
-                    </Col>
-                  </Row>
+                    </div>
+                    <div className="col-md-10">
+                      <div className="card-body">
+                        <h5 className="card-title">
+                          {result.title} by {result.authors}
+                        </h5>
+                        <p className="card-text">{result.description}</p>
+                        <div>
+                          <button
+                            onClick={() => this.handleSavedBtn(result)}
+                            className="btn badge-pill btn-outline-warning mt-3 ml-3"
+                          >
+                            {this.state.savedBooks
+                              .map((book) => book._id)
+                              .includes(result._id)
+                              ? "Unsave"
+                              : "Save"}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          );
-        })}
-    </Container>
-  );
-};
+              ))}
+          </div>
+        ) : (
+          <h1 className="text-center">No Results to Display</h1>
+        )}
+      </div>
+    );
+  }
+}
 
-export default Saved;
+export default SavedBooks;

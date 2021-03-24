@@ -8,23 +8,34 @@ const styles = {
 
 function ResultsCard(props) {
   return (
-    <div className="col-lg-3" id={props.id} key={props.id}>
+    <div className="container" id={props.id} key={props.id}>
       <div className="img-container">
-        <h5>{props.title}</h5>
-        <h6>{props.authors}</h6>
-        <h6>{props.publisher}</h6>
-        <img alt={props.title} src={props.image} style={styles.imageLinks} />
-        <button
-          type="submit"
-          className="submitBtn btn btn-secondary"
-          onClick={() =>
-            props.handleSavedBtn(props.title, props.authors, props.publisher)
-          }
-        >
-          Save
-        </button>
-
-        <p>{props.description}</p>
+        <div className="card-title">
+          <h5>{props.title}</h5>
+        </div>
+        <div className="card-content">
+          <h6>{props.authors}</h6>
+          <h6>{props.publisher}</h6>
+          <img
+            alt={props.title}
+            src={props.image}
+            style={styles.imageLinks}
+            float="left"
+            width="160px"
+            height="240px"
+            object-fit="cover"
+          />
+          <p>{props.synopsis}</p>
+          <button
+            type="submit"
+            className="submitBtn btn btn-secondary"
+            onClick={() =>
+              props.handleSavedBtn(props.title, props.authors, props.synopsis, props.publisher)
+            }
+          >
+            Save
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,5 @@
 import React from "react";
 import BookSearch from "./BookSearch";
-import { Container, Row, Col } from "./Layout";
-//import Results from "./Results";
 import API from "../utils/API";
 import ResultsCard from "./ResultsCard";
 
@@ -16,7 +14,7 @@ class ResultsContainer extends React.Component {
     this.searchBooks("");
   }
   searchBooks = (search) => {
-    API.googleBooks(search)
+    API.getBook(search)
       .then((res) => {
         this.setState({
           results: res.data.items,
@@ -26,10 +24,10 @@ class ResultsContainer extends React.Component {
       .catch((err) => console.log(err));
   };
 
-  handleBookClick = (event) => {
-    let bookId = event;
-    console.log(bookId);
-  };
+  // handleBookClick = (event) => {
+  //   let bookId = event;
+  //   console.log(bookId);
+  // };
 
   handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -43,39 +41,33 @@ class ResultsContainer extends React.Component {
     this.searchBooks(this.state.search);
   };
 
-  handleSavedBtn = (title, authors, publisher) => {
+  handleSavedBtn = (title, authors, publisher, synopsis) => {
     const bookInfo = {
       title: title,
       author: authors,
       publisher: publisher,
+      synopsis: synopsis
     };
     console.log(bookInfo);
     API.saveBook(bookInfo)
       .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      //.catch((err) => console.log(err));
   };
 
   render() {
     return (
-      <Container fluid>
-        <Container>
-          <Row>
-            <Col size="12">
-              <BookSearch
-                search={this.state.search}
-                handleFormSubmit={this.handleFormSubmit}
-                handleInputChange={this.handleInputChange}
-              />
-            </Col>
-          </Row>
-        </Container>
-        <Row>
-          {this.state.results.map((book, index) => (
+      <div>
+        <BookSearch
+          search={this.state.search}
+          handleFormSubmit={this.handleFormSubmit}
+          handleInputChange={this.handleInputChange}
+        />
+        <div className="container-fluid">
+          {this.state.results && this.state.results.map((book, index) => (
             <div key={index}>
               <ResultsCard
                 id={book.volumeInfo.id}
                 title={book.volumeInfo.title}
-                decription={book.volumeInfo.description}
                 authors={book.volumeInfo.authors}
                 publisher={book.volumeInfo.publisher}
                 image={
@@ -84,11 +76,12 @@ class ResultsContainer extends React.Component {
                   book.volumeInfo.imageLinks.thumbnail
                 }
                 handleSavedBtn={this.handleSavedBtn}
+                decription={book.volumeInfo.synopsis}
               />
             </div>
           ))}
-        </Row>
-      </Container>
+        </div>
+      </div>
     );
   }
 }
