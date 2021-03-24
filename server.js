@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const routes = require("./routes/API");
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const routes = require("./routes/api");
 const app = express();
 const path = require("path");
 const PORT = process.env.PORT || 3001;
@@ -10,6 +12,8 @@ require('dotenv').config();
 //--------------------------------Middleware---------------------------------------------------//
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(cors());
 
 //-------------------------- Serve up static assets-------------------------------------------//
 if (process.env.NODE_ENV === "production") {
